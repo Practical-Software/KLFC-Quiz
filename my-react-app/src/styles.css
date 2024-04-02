@@ -1,0 +1,107 @@
+
+.red-glow {
+  position: relative;
+}
+
+.red-glow.glow::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: inherit;
+  background-color: rgb(255, 88, 88);
+  z-index: -1;
+  animation: red-glow-animation 2s infinite alternate;
+}
+
+@keyframes red-glow-animation {
+  0% {
+    box-shadow: 0 0 1px 0px red;
+  }
+  100% {
+    box-shadow: 0 0 3px 2px red;
+  }
+}
+
+.blue-glow {
+    position: relative;
+  }
+  
+  .blue-glow.glow::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border-radius: inherit;
+    background-color: #3f51b5;
+    z-index: -1;
+    animation: blue-glow-animation 2s infinite alternate;
+
+  }
+  
+  @keyframes blue-glow-animation {
+    0% {
+      box-shadow: 0 0 1px 0px #6bd3ff;
+    }
+    100% {
+      box-shadow: 0 0 3px 2px #6bd3ff;
+    }
+  }
+
+  .green-glow {
+    position: relative;
+  }
+  
+  .green-glow.glow::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border-radius: inherit;
+    background-color: #4caf50;
+    z-index: -1;
+    animation: green-glow-animation 2s infinite alternate;
+
+  }
+  
+  @keyframes green-glow-animation {
+    0% {
+      box-shadow: 0 0 1px 0px #79ff7d;
+    }
+    100% {
+      box-shadow: 0 0 3px 2px #79ff7d;
+    }
+  }
+
+  .orange-glow {
+    position: relative;
+  }
+  
+  .orange-glow.glow::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border-radius: inherit;
+    background-color: #ffa826;
+    z-index: -1;
+    animation: orange-glow-animation 2s infinite alternate;
+
+  }
+  
+  @keyframes orange-glow-animation {
+    0% {
+      box-shadow: 0 0 1px 0px #fae92b;
+    }
+    100% {
+      box-shadow: 0 0 3px 2px #ff9800;
+    }
+  }

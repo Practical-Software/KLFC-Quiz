@@ -1,3 +1,85 @@
+import Question from "./Question"
+
+function Quiz(){
+
+    const klfcQuiz = 
+        [
+            {
+            question:"The soup Koreans eat on birthdays is called?",
+            options:["Teokguk","Miyeok soup", "Yukgaejang", "Taro soup"],
+            answer:"b"
+            },
+            {
+            question:"Does Korea have four distinct seasons?",
+            options:["True","False"],
+            answer:"a"
+            },
+            {
+            question:"Kimchi is originally made to eat vegetables during the winter",
+            options:["True","False"],
+            answer:"a"
+            },
+            {
+            question:"Traditional Korean paper is called...",
+            options:["B4","Honji", "A4", "Hanji"],
+            answer:"d"
+            },
+            {
+            question:"What Korean traditional alcoholic drink is white and made with rice?",
+            options:["Whiskey","Beer", "Makgeolli", "Wine"],
+            answer:"c"
+            },
+            {
+            question:"What does Hun-Min-Jeong-Eum mean?",
+            options:["Teaching the people in righteous words",
+                     "Teaching the people in fun words", 
+                     "Teaching the people in wrong words", 
+                     "Teaching the poeple in exciting words"],
+            answer:"a"
+            },
+            {
+            question:"What is side dish called in Korean?",
+            options:["Kimchi","Danmuji", "Banchan", "Yeachan"],
+            answer:"c"
+            },
+            {
+            question:"Who was the first president of South Korea?",
+            options:["Seung-Man Lee","Chung-hee Park", "Kyu-hah Choi", "Gojong"],
+            answer:"a"
+            },
+            {
+            question:"What is the capital city of South Korea?",
+            options:["Moscow","Seoul", "Dejeon", "Tokyo"],
+            answer:"b"
+            },
+            {
+            question:"What is the name of the traditional Korean costume?",
+            options:["Ao Dai","Kimono", "Cheongsam", "Hanbok"],
+            answer:"d"
+            },
+            {
+            question:"What is the national flower of South Korea",
+            options:["Hibiscus","Rose", "Lily", "Daffodil"],
+            answer:"a"
+            },
+            {
+            question:"What is the name of Korean flag?",
+            options:["Ingong gi","Seoungjo gi", "Taegeug gi", "Ja gi"],
+            answer:"c"
+            },
+        ];
+
+    
+    return(
+        <>
+            <Question question = {klfcQuiz[0].question} options = {klfcQuiz[0].options} answer = {klfcQuiz[0].answer} />
+        </>
+    )
+}
+
+export default Quiz;
+
+
 import * as React from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -6,7 +88,6 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import Fade from '@mui/material/Fade';
-import Grow from '@mui/material/Grow';
 import TextField from '@mui/material/TextField';
 
 
@@ -19,7 +100,8 @@ export default function Question(props) {
     const options = props.options;
     const answer = props.answer;
     
-const [view, setView] = React.useState(props.view);
+    
+const [view, setView] = React.useState(null);
 const handleChange = (event, newValue) => {
     console.log("New Value:" + newValue);
     setView(newValue); // Update the state with the new value of the toggle button
@@ -37,36 +119,18 @@ const handleQuestionStatus = (error) => {
     setError(error);
 }
 
-const [growStatus, setGrowStatus] = React.useState(false);
-
 const handleSubmit = () => {
     if (view === null || view === undefined || view == null){
         setError("Please select an option");
     } else {
         setError(null);
-        if (view === answer) {
+        if (view == answer) {
             console.log("Correct!");
-            props.onAnswer(true);
-            setView(null);
         } else {
             console.log("Wrong");
-            props.onAnswer(false);
-
         }
-        setView(null);
-        setGrowStatus(false);
-        setIsRedGlowing(false);
-        setIsBlueGlowing(false);
-        setIsGreenGlowing(false);
-        setIsOrangeGlowing(false);
     }
 }
-
-React.useEffect(() => {
-    setView(null);
-    setGrowStatus(true);
-    console.log("useEffect!");
-}, [question]);
 
   const [isRedGlowing, setIsRedGlowing] = React.useState(false);
   const toggleRedGlow = () => {
@@ -111,11 +175,11 @@ React.useEffect(() => {
   };
 
   return (
-    <Grow in={growStatus}>
     <div>
         <Fade in={error !== null}>
             <Alert severity="error">{error}</Alert>
         </Fade>
+
         <Stack
         className='card'
         border={1}
@@ -169,7 +233,7 @@ React.useEffect(() => {
             >
             <Typography variant='h5'>{options[1]}</Typography>
             </ToggleButton>
-            { options[2] && <ToggleButton
+            <ToggleButton
             value="c"
             className={`green-glow ${isGreenGlowing ? 'glow' : ''}`}
             onClick={toggleGreenGlow}
@@ -186,8 +250,8 @@ React.useEffect(() => {
               }}
             >
             <Typography variant='h5'>{options[2]}</Typography>
-            </ToggleButton> }
-            { options[3] &&<ToggleButton
+            </ToggleButton>
+            <ToggleButton
             value="d"
             className={`orange-glow ${isOrangeGlowing ? 'glow' : ''}`}
             onClick={toggleOrangeGlow}
@@ -204,13 +268,14 @@ React.useEffect(() => {
               }}
             >
             <Typography variant='h5'>{options[3]}</Typography>
-            </ToggleButton> }
+            </ToggleButton>
         </ToggleButtonGroup>
         <Button variant='contained' color='success' size='large' sx={{ marginTop:2, }} onClick={handleSubmit} disableElevation>
             Submit
         </Button>
+        
         </Stack>
+       
     </div>
-    </Grow>
   );
 }
