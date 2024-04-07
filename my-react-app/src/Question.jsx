@@ -8,6 +8,7 @@ import Alert from '@mui/material/Alert';
 import Fade from '@mui/material/Fade';
 import Grow from '@mui/material/Grow';
 import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
 
 
 import './styles.css';
@@ -21,51 +22,81 @@ export default function Question(props) {
     
 const [view, setView] = React.useState(props.view);
 const handleChange = (event, newValue) => {
-    console.log("New Value:" + newValue);
+    //console.log("New Value:" + newValue);
     setView(newValue); // Update the state with the new value of the toggle button
 };
 
 const [error, setError] = React.useState(null);
 const handleError = (error) => {
-    console.error("Error: " + error);
+    //console.error("Error: " + error);
     setError(error);
 }
 
-const [questionStatus, setQuestionStatus] = React.useState(null);
-const handleQuestionStatus = (error) => {
-    console.error("Error: " + error);
-    setError(error);
-}
+const [correctAnswer, setCorrectAnswer] = React.useState(null);
+
+const [correctStatus, setCorrectStatus] = React.useState(null);
 
 const [growStatus, setGrowStatus] = React.useState(false);
+
+const [yourAnswer, setYourAnswer] = React.useState(null);
 
 const handleSubmit = () => {
     if (view === null || view === undefined || view == null){
         setError("Please select an option");
     } else {
         setError(null);
+
+        switch (view) {
+            case "a":
+                setYourAnswer(options[0]);
+                break;
+            case "b":
+                setYourAnswer(options[1]);
+                break;
+            case "c":
+                setYourAnswer(options[2]);
+                break;
+            case "d":
+                setYourAnswer(options[3]);
+                break;                           
+        }
+        switch (answer) {
+            case "a":
+                setCorrectAnswer(options[0]);
+                break;
+            case "b":
+                setCorrectAnswer(options[1]);
+                break;
+            case "c":
+                setCorrectAnswer(options[2]);
+                break;
+            case "d":
+                setCorrectAnswer(options[3]);
+                break;                           
+        }
+
         if (view === answer) {
-            console.log("Correct!");
-            props.onAnswer(true);
+            //console.log("Correct!");
+            setCorrectStatus(true);
             setView(null);
         } else {
-            console.log("Wrong");
-            props.onAnswer(false);
-
+            //console.log("Wrong");
+            setCorrectStatus(false);
         }
-        setView(null);
-        setGrowStatus(false);
-        setIsRedGlowing(false);
-        setIsBlueGlowing(false);
-        setIsGreenGlowing(false);
-        setIsOrangeGlowing(false);
     }
 }
 
 React.useEffect(() => {
     setView(null);
     setGrowStatus(true);
-    console.log("useEffect!");
+    setCorrectAnswer(null);
+    setYourAnswer(null);
+    setCorrectStatus(null);
+    setIsRedGlowing(false);
+    setIsBlueGlowing(false);
+    setIsGreenGlowing(false);
+    setIsOrangeGlowing(false);
+    //console.log("useEffect!");
 }, [question]);
 
   const [isRedGlowing, setIsRedGlowing] = React.useState(false);
@@ -108,6 +139,8 @@ React.useEffect(() => {
     margin: '1em',
     textAlign: 'center',
     display: 'inline-block',
+    backgroundColor: '#ffffff',
+
   };
 
   return (
@@ -121,94 +154,162 @@ React.useEffect(() => {
         border={1}
         sx={stackStyles}
         >
-        <Typography variant='h4' align='center' marginBottom={2}>
+
+        <Typography variant='h4' align='center' marginBottom={1}>
             {question}
         </Typography>
-        <ToggleButtonGroup
-            orientation="vertical"
-            exclusive
-            value={view}
-            fullWidth={true}
-            onChange={handleChange}
-            sx={{ display: 'flex', justifyContent: 'center' }}
-        >
-            <ToggleButton
-            value="a"
-            className={`red-glow ${isRedGlowing ? 'glow' : ''}`}
-            onClick={toggleRedGlow}
-            sx={{
-                backgroundColor: '#ff9b94',
 
-                color: 'black',
-                '&:hover': {
-                  backgroundColor: '#ff9b94',
-                },
-                '&.Mui-selected': {
-                    backgroundColor: 'rgb(255, 88, 88)', // Change background color when selected
-                    color: '#fff', // Change text color when selected
-                  },
-              }}
+        {
+        (correctStatus) &&
+
+        <Fade in={true}>
+        <Box>
+            <Typography variant='h2' align='center' marginBottom={3}>Correct! 😀</Typography>
+            <Typography variant='h5' align='center' marginBottom={4}>Your Answer: {yourAnswer} </Typography>
+            <Button size='large'
+                onClick={() => {
+                    props.onAnswer(true);
+                    setGrowStatus(false);
+                }}>
+                Next Question
+            </Button>
+        </Box>
+        </Fade>
+
+        } 
+        {
+        (!correctStatus && correctStatus !== null) && 
+        
+        <Fade in={true}>
+        <Box>
+            <Typography variant='h3' align='center' marginBottom={3}>
+                Incorrect ☹️
+            </Typography>
+            {/* <Typography variant='h5' align='center' marginBottom={2}>Your Answer: {yourAnswer} </Typography> */}
+            <Typography variant='h5' align='center' marginBottom={4}>Correct Answer: {correctAnswer} </Typography>
+            <Button size='large'
+                onClick={() => {
+                    props.onAnswer(false);
+                    setGrowStatus(false);
+                }}>
+                Next Question
+            </Button>
+        </Box>
+        </Fade>
+        }
+
+        {
+        (yourAnswer == null) &&
+
+            <ToggleButtonGroup
+                orientation="vertical"
+                exclusive
+                value={view}
+                fullWidth={true}
+                onChange={handleChange}
+                sx={{ display: 'flex', justifyContent: 'center' }}
             >
-            <Typography variant='h5'>{options[0]}</Typography>
-            </ToggleButton>
-            <ToggleButton
-            value="b"
-            className={`blue-glow ${isBlueGlowing ? 'glow' : ''}`}
-            onClick={toggleBlueGlow}
-            sx={{
-                color: 'black',
-                backgroundColor: 'rgb(121, 169, 252)',
-                '&:hover': {
-                  backgroundColor: 'rgb(121, 169, 252)',
-                },
-                '&.Mui-selected': {
-                    backgroundColor: 'rgb(69, 137, 255)', // Change background color when selected
-                    color: '#fff', // Change text color when selected
-                  },
-              }}
-            >
-            <Typography variant='h5'>{options[1]}</Typography>
-            </ToggleButton>
-            { options[2] && <ToggleButton
-            value="c"
-            className={`green-glow ${isGreenGlowing ? 'glow' : ''}`}
-            onClick={toggleGreenGlow}
-            sx={{
-                backgroundColor: 'rgb(153, 255, 160)',
-                color: 'black',
-                '&:hover': {
-                  backgroundColor: 'rgb(153, 255, 160)',
-                },
-                '&.Mui-selected': {
-                    backgroundColor: 'rgb(28, 166, 23)', // Change background color when selected
-                    color: '#fff', // Change text color when selected
-                  },
-              }}
-            >
-            <Typography variant='h5'>{options[2]}</Typography>
-            </ToggleButton> }
-            { options[3] &&<ToggleButton
-            value="d"
-            className={`orange-glow ${isOrangeGlowing ? 'glow' : ''}`}
-            onClick={toggleOrangeGlow}
-            sx={{
-                color: 'black',
-                backgroundColor: 'rgb(247, 203, 79)',
-                '&:hover': {
-                  backgroundColor: 'rgb(247, 203, 79)',
-                },
-                '&.Mui-selected': {
-                    backgroundColor: 'rgb(255, 181, 33)', // Change background color when selected
-                    color: '#fff', // Change text color when selected
-                  },
-              }}
-            >
-            <Typography variant='h5'>{options[3]}</Typography>
-            </ToggleButton> }
-        </ToggleButtonGroup>
-        <Button variant='contained' color='success' size='large' sx={{ marginTop:2, }} onClick={handleSubmit} disableElevation>
-            Submit
-        </Button>
+                <ToggleButton
+                value="a"
+                className={`red-glow ${isRedGlowing ? 'glow' : ''}`}
+                onClick={toggleRedGlow}
+                sx={{
+                    backgroundColor: 'rgba(255, 155, 148, 0.7)',
+
+                    color: 'black',
+
+                    '&:hover': {
+                    backgroundColor: 'rgba(255, 155, 148, 0.7)',
+                    },
+                    '&.Mui-selected': {
+                        backgroundColor: 'rgba(255, 88, 88)', // Change background color when selected
+                        color: '#fff', // Change text color when selected
+                        '&:hover': {
+                            backgroundColor: 'rgb(255, 88, 88)',
+                        },
+                    },
+
+                }}
+                >
+                <Typography variant='h5'>{options[0]}</Typography>
+                </ToggleButton>
+                <ToggleButton
+                value="b"
+                className={`blue-glow ${isBlueGlowing ? 'glow' : ''}`}
+                onClick={toggleBlueGlow}
+                sx={{
+                    color: 'black',
+                    backgroundColor: 'rgba(121, 169, 252, 0.7)',
+                    '&:hover': {
+                    backgroundColor: 'rgba(121, 169, 252, 0.7)',
+                    },
+                    '&.Mui-selected': {
+                        backgroundColor: 'rgb(2, 101, 207)', // Change background color when selected
+                        color: '#fff', // Change text color when selected
+                        '&:hover': {
+                            backgroundColor: 'rgb(2, 101, 207)',
+                        },
+                    },
+                    
+                    
+                }}
+                >
+                <Typography variant='h5'>{options[1]}</Typography>
+                </ToggleButton>
+                { options[2] && <ToggleButton
+                value="c"
+                className={`green-glow ${isGreenGlowing ? 'glow' : ''}`}
+                onClick={toggleGreenGlow}
+                sx={{
+                    backgroundColor: 'rgba(153, 255, 160, 0.7)',
+                    color: 'black',
+                    '&:hover': {
+                    backgroundColor: 'rgba(153, 255, 160, 0.7)',
+                    },
+                    '&.Mui-selected': {
+                        backgroundColor: 'rgb(28, 166, 23)', // Change background color when selected
+                        color: '#fff', // Change text color when selected
+                        '&:hover': {
+                            backgroundColor: 'rgb(28, 166, 23)',
+                        },
+                    },
+                }}
+                >
+                <Typography variant='h5'>{options[2]}</Typography>
+                </ToggleButton> }
+                { options[3] &&<ToggleButton
+                value="d"
+                className={`orange-glow ${isOrangeGlowing ? 'glow' : ''}`}
+                onClick={toggleOrangeGlow}
+                sx={{
+                    color: 'black',
+                    backgroundColor: 'rgba(247, 203, 79, 0.7)',
+                    '&:hover': {
+                    backgroundColor: 'rgba(247, 203, 79, 0.7)',
+                    },
+                    '&.Mui-selected': {
+                        backgroundColor: 'rgb(255, 181, 33)', // Change background color when selected
+                        color: '#fff', // Change text color when selected
+                        '&:hover': {
+                            backgroundColor: 'rgb(255, 181, 33)',
+                        },
+                    },
+                }}
+                >
+                <Typography variant='h5'>{options[3]}</Typography>
+                </ToggleButton> }
+            </ToggleButtonGroup>
+
+        } 
+
+        {
+        (yourAnswer == null) &&
+
+            <Button variant='contained' color='success' size='large' sx={{ marginTop:2, }} onClick={handleSubmit} disableElevation>
+                Submit
+            </Button>
+
+        }
         </Stack>
     </div>
     </Grow>

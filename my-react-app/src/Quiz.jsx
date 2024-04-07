@@ -14,18 +14,40 @@ function Quiz() {
         border: '1px solid rgba(255,255,255,0.8)',
         borderRadius: '10px',
         boxShadow: '0px 5px 5px 5px rgba(0, 0, 0, 0.14)',
-        padding: '3em',
+        padding: '1.4em',
         margin: '2em',
         textAlign: 'center',
         display: 'inline-block',
+        backgroundColor: '#ffffff',
       };
 
 
     const [questions, setQuestions] = useState([
             {
-                question:"The soup Koreans eat on birthdays is called?",
-                options:["Teokguk","Miyeok soup", "Yukgaejang", "Taro soup"],
+                question:"What does KLFC stand for?",
+                options:["Korean Language Foundation Course",
+                        "Korean Linguistics Folklore Center",
+                        "Korean Language Flagship Center",
+                        "Korea Language Fluency Certificate"],
+                answer:"c"
+            },
+            {
+                question:"What is the capital city of South Korea?",
+                options:["Moscow","Seoul", "Dejeon", "Tokyo"],
                 answer:"b"
+            },
+            {
+                question:"Which dog is native to Korea?",
+                options:["Shiba dog","Jindo Dog", "Hamhung Dog", "Golden Retriever"],
+                answer:"b"
+            },
+            {
+                question:"What is the name of the Korean alphabet?",
+                options:["Cuneiform",
+                        "Katakana", 
+                        "Hiragana", 
+                        "Hangul"],
+                answer:"d"
             },
             {
                 question:"Does Korea have four distinct seasons?",
@@ -33,13 +55,18 @@ function Quiz() {
                 answer:"a"
             },
             {
-                question:"Kimchi is originally made to eat vegetables during the winter",
+                question:"Kimchi was originally made to eat vegetables during the winter",
                 options:["True","False"],
                 answer:"a"
             },
             {
-                question:"Traditional Korean paper is called...",
-                options:["B4","Honji", "A4", "Hanji"],
+                question:"Which is not one of BTS’s songs?",
+                options:["Dynamite","DNA", "Honey", "Butter"],
+                answer:"c"
+            },
+            {
+                question:"Which one of these is not a Twice song?",
+                options:["Dance the Night Away","I Got You", "Cheer Up", "EASY"],
                 answer:"d"
             },
             {
@@ -48,31 +75,8 @@ function Quiz() {
                 answer:"c"
             },
             {
-                question:"What does Hun-Min-Jeong-Eum mean?",
-                options:["Teaching the people in righteous words",
-                        "Teaching the people in fun words", 
-                        "Teaching the people in wrong words", 
-                        "Teaching the poeple in exciting words"],
-                answer:"a"
-            },
-            {
-                question:"Which food is not Korean traditional food?",
-                options:["Teokguk","Taro Soup", "Song Pyeon", "Spicy Chicken Flavored Noodles"],
-                answer:"d"
-                },
-            {
-                question:"What is side dish called in Korean?",
-                options:["Kimchi","Danmuji", "Banchan", "Yeachan"],
-                answer:"c"
-            },
-            {
-                question:"Who was the first president of South Korea?",
-                options:["Seung-Man Lee","Chung-hee Park", "Kyu-hah Choi", "Gojong"],
-                answer:"a"
-            },
-            {
-                question:"What is the capital city of South Korea?",
-                options:["Moscow","Seoul", "Dejeon", "Tokyo"],
+                question:"What is the soup Koreans eat on their birthdays?",
+                options:["Teokguk","Miyeok soup", "Yukgaejang", "Taro soup"],
                 answer:"b"
             },
             {
@@ -81,9 +85,14 @@ function Quiz() {
                 answer:"d"
             },
             {
-                question:"The invention of the world's first movable metal type came from Korea.",
-                options:["True", "False"],
-                answer:"a"
+                question:"What is the name of Korea's currency?",
+                options:["Yen","Won", "Ruble", "Pound"],
+                answer:"b"
+            },
+            {
+                question:"Who is not a member of the K-Pop group TWICE?",
+                options:["Jihyo", "Dahyun", "Irin", "Sana"],
+                answer:"c"
             },
             {
                 question:"What is the national flower of South Korea",
@@ -92,18 +101,18 @@ function Quiz() {
             },
             {
                 question:"What is the name of Korean flag?",
-                options:["Ingong gi","Seoungjo gi", "Taegeug gi", "Ja gi"],
+                options:["Ingong gi","Seoungjo gi", "Taegeuk gi", "Ja gi"],
                 answer:"c"
             },
             {
-                question:"What is the name of Korea's currency?",
-                options:["Yen","Won", "Ruble", "Pound"],
-                answer:"b"
+                question:"Which is not a traditional Korean food?",
+                options:["Teokguk","Taro Soup", "Song Pyeon", "Spicy Chicken Flavored Noodles"],
+                answer:"d"
             },
     ]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [score, setScore] = useState(0);
-    const [showResult, setShowResult] = useState(false);
+    const [showResult, setShowResult] = useState("start");
     const [showImmResult, setShowImmResult] = useState(false);
 
     const handleAnswer = (isCorrect) => {
@@ -113,34 +122,59 @@ function Quiz() {
         if (currentQuestionIndex < questions.length - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
         } else {
-            setShowResult(true);
+            setShowResult("results");
         }
     };
 
     const handleRestart = () => {
         setScore(0);
         setCurrentQuestionIndex(0);
-        setShowResult(false);
+        setShowResult("start");
     };
+
+    function getMessage(score) {
+        if (score == questions.length) {
+            return("Perfection!! 🥇");
+        } else
+        if (score >= 13) {
+            return("Superb! 🏆");
+        } else
+        if (score >= 7) {
+            return("Good Job! 👍");
+        } else {
+            return("Keep trying!");
+        }
+    }
 
     return (
         <div>
-            
-            {!showResult ? (
+            {(showResult == "start") &&
+                <Stack style={stackStyles}>
+                    <Typography padding={2} paddingBottom={0} variant="h4">Korean Language Flagship Center <br/> Culture Day Trivia</Typography>
+                    <Typography padding={2} paddingTop={1} paddingBottom={4} variant="h6">Test your knowledge of Korea and its culture!</Typography>
+                    <Button variant='contained' size='large' color='primary' onClick={() => setShowResult("quiz")}> Start </Button>
+                </Stack>                
+
+            }
+            {(showResult == "quiz") &&
                 <Question
-                    question={questions[currentQuestionIndex].question}
+                    question={questions[currentQuestionIndex].question + ` (${currentQuestionIndex+1}/${questions.length})`}
                     options={questions[currentQuestionIndex].options}
                     answer={questions[currentQuestionIndex].answer}
                     onAnswer={handleAnswer}
                     view={null}
                 />
-            ) : (
+            }
+            {(showResult == "results") &&
                 <Stack style={stackStyles}>
-                    <Typography padding={2} paddingBottom={0} variant="h3">Quiz Completed!</Typography>
-                    <Typography padding={2} paddingTop={1} paddingBottom={4} variant="h5">Your Score: {score}/{questions.length}</Typography>
+                    <Typography padding={2} paddingBottom={0} variant="h4">Quiz Completed, <br/> Thanks for playing!</Typography>
+                    <Typography padding={2} paddingTop={1} paddingBottom={1} variant="h5">Your Score: {score}/{questions.length}</Typography>
+                    <Typography padding={2} paddingTop={1} paddingBottom={4} variant="h4">
+                        {getMessage(score)}
+                    </Typography>
                     <Button variant='contained' size='large' color='primary' onClick={handleRestart}> Restart </Button>
                 </Stack>
-            )}
+            }
         </div>
     );
 }
