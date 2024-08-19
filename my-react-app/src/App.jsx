@@ -1,10 +1,9 @@
 import React from 'react';
 import Quiz from './Quiz';
-//import Test from './Test'
 import { Container } from '@mui/material';
 
 const backStyles = {        
-    backgroundImage: 'url("https:koreanflagship.manoa.hawaii.edu/trivia/CKS-Front.png")',
+    backgroundImage: 'url("CKS-Front.png")',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     filter: 'blur(8px)', // Add a blur effect
@@ -57,6 +56,11 @@ const imgStyles = {
     borderBottomRightRadius: '22px',
 }
 
+/**
+ * The main application component, responsible for rendering the quiz interface.
+ *
+ * @return {JSX.Element} The JSX element representing the application interface.
+ */
 function App() {
   return (
     <div style={containerStyles}>

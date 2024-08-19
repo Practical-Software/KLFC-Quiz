@@ -13,7 +13,16 @@ import Box from '@mui/material/Box';
 
 import './styles.css';
 
-
+/**
+ * A functional component that renders a question with multiple options and handles user input.
+ *
+ * @param {object} props - The component's props.
+ * @param {string} props.question - The question to be displayed.
+ * @param {array} props.options - An array of options for the question.
+ * @param {string} props.answer - The correct answer to the question.
+ * @param {function} props.onAnswer - A callback function to be called when the user submits an answer.
+ * @return {JSX.Element} The rendered question component.
+ */
 export default function Question(props) {
 
     const question = props.question;
@@ -21,12 +30,27 @@ export default function Question(props) {
     const answer = props.answer;
     
 const [view, setView] = React.useState(props.view);
+
+/**
+ * Handles changes to the toggle button state.
+ *
+ * @param {object} event - The event object triggered by the change.
+ * @param {string} newValue - The new value of the toggle button.
+ * @return {void}
+ */
 const handleChange = (event, newValue) => {
     //console.log("New Value:" + newValue);
     setView(newValue); // Update the state with the new value of the toggle button
 };
 
 const [error, setError] = React.useState(null);
+
+/**
+ * Sets the error state with the provided error message.
+ *
+ * @param {string} error - The error message to be set.
+ * @return {void}
+ */
 const handleError = (error) => {
     //console.error("Error: " + error);
     setError(error);
@@ -40,6 +64,11 @@ const [growStatus, setGrowStatus] = React.useState(false);
 
 const [yourAnswer, setYourAnswer] = React.useState(null);
 
+/**
+ * Handles the submission of the user's answer.
+ *
+ * @return {void}
+ */
 const handleSubmit = () => {
     if (view === null || view === undefined || view == null){
         setError("Please select an option");
@@ -100,6 +129,12 @@ React.useEffect(() => {
 }, [question]);
 
   const [isRedGlowing, setIsRedGlowing] = React.useState(false);
+
+/**
+ *  Toggles the red glow effect on or off.
+ *  
+ *  @return {void} No return value.
+ */
   const toggleRedGlow = () => {
     setIsRedGlowing(!isRedGlowing);
     setIsBlueGlowing(false);
@@ -108,6 +143,12 @@ React.useEffect(() => {
   };
 
   const [isBlueGlowing, setIsBlueGlowing] = React.useState(false);
+
+/**
+ * Toggles the blue glow effect on or off.
+ *
+ * @return {void} No return value.
+ */
   const toggleBlueGlow = () => {
     setIsBlueGlowing(!isBlueGlowing);
     setIsRedGlowing(false);
@@ -116,6 +157,12 @@ React.useEffect(() => {
   };
 
   const [isGreenGlowing, setIsGreenGlowing] = React.useState(false);
+
+/**
+ * Toggles the green glow effect on or off.
+ *
+ * @return {void} No return value.
+ */
   const toggleGreenGlow = () => {
     setIsGreenGlowing(!isGreenGlowing);
     setIsBlueGlowing(false);
@@ -124,6 +171,12 @@ React.useEffect(() => {
   };
   
   const [isOrangeGlowing, setIsOrangeGlowing] = React.useState(false);
+
+/**
+ * Toggles the orange glow effect on or off.
+ *
+ * @return {void} No return value.
+ */
   const toggleOrangeGlow = () => {
     setIsOrangeGlowing(!isOrangeGlowing);
     setIsBlueGlowing(false);
